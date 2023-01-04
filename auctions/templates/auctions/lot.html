@@ -1,0 +1,116 @@
+{% extends "auctions/layout.html" %}
+{% load auctions_extras %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="product-card bg-white mb-4 overflow-hidden d-lg-flex rounded-lg position-relative">
+                <div class="product-page-image overflow-hidden d-flex align-items-center m-4">
+                    <img src="{{ lot.image_url }}" alt="" class="img-fluid img-responsive rounded product-image">
+                </div>
+                <div class="py-4 pr-4 pl-4 pl-lg-0 product-details">
+                    <h4 class="font-weight-bold d-flex justify-content-between">
+                        <div class="text-dark">{{ lot.title }}</div>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'wish' lot.id %}" class="ml-2 text-muted">
+                            {% if lot.id in wishlist %}
+                                <i class="fa fa-heart"></i></a>
+                            {% else %}
+                                <i class="fa fa-heart-o"></i></a>
+                            {% endif %}
+                        {% endif %}
+                    </h4>
+                    <a href="#!" class="text-uppercase py-0 px-2 rounded-lg border mb-2 d-inline-block">
+                        <small class="font-weight-bold">{{ categories|get_item:lot.category }}</small>
+                    </a>
+                    <div class="d-flex align-items-baseline">
+                        <h2><span class="badge badge-success">
+                            {{ last_bet }} {{ bet_currency }}
+                        </span></h2>
+                    </div>
+                    <h6>
+                    <span class="badge badge-light mb-2">Остання ставка:</span>
+                        <i class="fa fa-user-circle"></i>
+                        <span class="badge badge-dark mb-2">{{ bet_owner.username }}</span>
+                    </h6>
+                    {% if lot.status == False and bet_owner == user %}
+                        <div class="alert alert-success" role="alert">
+                            <h4 class="alert-heading">Вітаємо!</h4>
+                            <p>Ви виграли лот!</p>
+                            <hr>
+                            <p class="mb-0">Аукціон закрито!</p>
+                        </div>
+                    {% endif %}
+                    <p>
+                        {{ lot.description }}
+                    </p>
+                    {% if user.is_authenticated and lot.status == True %}
+                        <form action="{% url 'lot' lot.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input class="form-control" type="number" step="0.01" min="{{ last_bet }}" name="bet" aria-label="" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <select class="form-control custom-select mr-sm-2" id="currency" name="currency">
+                                        {% for key, currency in currencies %}
+                                            <option class="dropdown-item" value="{{ key }}">{{ currency }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="input-group-append">
+                                    <button id="add_bet" class="btn btn-outline-success" type="submit">Зробити ставку</button>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <form action="{% url 'comment' lot.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <input type="text" name="comment" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-info" type="submit">Коментувати</button>
+                                </div>
+                            </div>
+                        </form>
+                    {% endif %}
+                    {% if user.is_authenticated and user == lot.username and lot.status == True %}
+                        <div class="input-group-append">
+                            <a href="{% url 'close' lot.id %}" class="btn btn-outline-danger">Завершити аукціон</a>
+                        </div>
+                        <hr>
+                    {% endif %}
+                    {% if comments %}
+                        <hr>
+                    {% endif %}
+                    <div class="list-group">
+                        {% for entry in comments %}
+                        <div class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <span class="badge badge-dark mb-2">{{ entry.username.username }}</span>
+                                <span class="badge badge-light mb-2">{{ entry.timestamp }}</span>
+                            </div>
+                            <p class="mb-1">{{ entry.comment }}</p>
+                        </div>
+                        {% empty %}
+                            {% if user.is_authenticated %}
+                                <div class="jumbotron jumbotron-fluid">
+                                    <div class="container">
+                                    <h1 class="display-4">Овва...</h1>
+                                    <p class="lead">Ніхто ще не написав жодного коментаря!</p>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="jumbotron jumbotron-fluid">
+                                    <div class="container">
+                                    <h1 class="display-4">Упс...</h1>
+                                    <p class="lead">Для того щоб залишати коментарі необхідно зареєструватися або авторизуватися на сайті!</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Новий лот</h2>
+    <form action="{% url 'create' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group row col-md-6">
+            <label for="title" class="col-sm-3 col-form-label">Назва:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="title">
+            </div>
+        </div>
+        <div class="form-group row col-md-6">
+            <label for="description" class="col-sm-3 col-form-label">Опис:</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" type="text" rows="3" name="description" aria-label=""></textarea>
+            </div>
+        </div>
+        <div class="form-group row col-md-6">
+            <label for="image_url" class="col-sm-3 col-form-label">Посилання на зображення:</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="image_url">
+            </div>
+        </div>
+        <div class="form-group row col-md-6">
+            <label for="image_url" class="col-sm-3 col-form-label">Категорія:</label>
+            <div class="col-sm-9">
+                <select class="form-control custom-select mr-sm-2" name="category">
+                    {% for key, category in categories %}
+                        <option value="{{ key }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="input-group row col-md-6">
+            <label for="bet" class="col-sm-3 col-form-label">Ставка:</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="number" step="0.01" min="0" name="bet" aria-label="">
+                <select class="form-control custom-select mr-sm-2" name="currency">
+                    {% for key, currency in currencies %}
+                        <option value="{{ key }}">{{ currency }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <hr>
+        <input class="btn btn-primary" type="submit" value="Зберегти лот">
+    </form>
+{% endblock %}

@@ -1,0 +1,79 @@
+@import url(https://fonts.googleapis.com/css?family=Lora|Roboto:400,500);
+
+body {
+    margin: 0;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+    font-variant-ligatures: none;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    background-color: #fafafa;
+}
+
+body {
+    background: #eee
+}
+
+#username {
+    color: black;
+}
+
+#currency {
+    border-radius: 0rem 0.25rem 0.25rem 0rem;
+}
+
+#add_bet {
+    border-radius: 0.25rem 0.25rem 0.25rem 0.25rem;
+}
+
+#nav-categories {
+    margin-left: 1em;
+}
+
+.fa-heart, .fa-heart-o {
+    color: red
+}
+
+.ratings i {
+    font-size: 16px;
+    color: red
+}
+
+.strike-text {
+    color: red;
+    text-decoration: line-through
+}
+
+.product-image {
+    width: 100%
+}
+
+.product-page-image {
+    height: 100%
+}
+
+.dot {
+    height: 7px;
+    width: 7px;
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 3px;
+    background-color: blue;
+    border-radius: 50%;
+    display: inline-block
+}
+
+.spec-1 {
+    color: #938787;
+    font-size: 15px
+}
+
+h5 {
+    font-weight: 400
+}
+
+.para {
+    font-size: 16px
+}
